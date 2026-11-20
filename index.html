@@ -37,7 +37,7 @@
     }
     body.theme-night {
       background: #000000;
-      color: #828894;
+      color: #8a909c;
     }
     body.theme-vfd {
       background: #000000;
@@ -54,6 +54,7 @@
       transition: opacity 0.25s ease;
     }
 
+    /* 主容器 */
     #app-container {
       position: relative;
       width: 100%;
@@ -61,11 +62,11 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: calc(env(safe-area-inset-top, 20px) + 12px) 28px 22px 28px;
+      padding: calc(env(safe-area-inset-top, 20px) + 14px) 3.5vw 3.5vh 3.5vw;
       transition: transform 1.5s ease-in-out;
     }
 
-    /* 頂部列：左上資訊膠囊 + 右上 iOS 15 寬版天氣卡片 */
+    /* ================= 頂部列（動態適應有無天氣卡片） ================= */
     .top-header-row {
       width: 100%;
       display: flex;
@@ -73,6 +74,13 @@
       align-items: flex-start;
       z-index: 10;
       gap: 16px;
+      transition: all 0.3s ease;
+    }
+
+    /* 純時鐘模式時，頂部日期膠囊自動水平置中 */
+    #app-container.mode-clock-only .top-header-row {
+      justify-content: center;
+      padding-top: 1.5vh;
     }
 
     .left-pills {
@@ -82,25 +90,32 @@
       gap: 10px;
     }
 
+    #app-container.mode-clock-only .left-pills {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
     .ios-pill {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 9px 16px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 8px 16px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.11);
       -webkit-backdrop-filter: blur(20px);
       backdrop-filter: blur(20px);
       font-size: 16px;
       font-weight: 500;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      letter-spacing: 0.4px;
     }
 
     body.theme-night .ios-pill {
       background: rgba(255, 255, 255, 0.03);
-      border-color: rgba(255, 255, 255, 0.06);
-      color: #6b7280;
+      border-color: rgba(255, 255, 255, 0.07);
+      color: #7c828e;
     }
 
     body.theme-vfd .ios-pill {
@@ -114,7 +129,7 @@
       border-radius: 8px;
       font-size: 14px;
       font-weight: 600;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.09);
     }
 
     body.theme-vfd .ios-chip {
@@ -128,18 +143,18 @@
 
     /* ================= 右上角 iOS 15 2x1 寬版天氣 Widget ================= */
     .ios-weather-wide {
-      width: 340px;
-      border-radius: 24px;
-      padding: 15px 18px 14px 18px;
+      width: 345px;
+      border-radius: 22px;
+      padding: 14px 18px 13px 18px;
       color: #ffffff;
       background: linear-gradient(155deg, #2b6cb0 0%, #1c3f70 55%, #122647 100%);
       border: 1px solid rgba(255, 255, 255, 0.22);
       box-shadow:
-        0 16px 36px rgba(0, 0, 0, 0.65),
+        0 14px 32px rgba(0, 0, 0, 0.65),
         inset 0 1px 1px rgba(255, 255, 255, 0.3);
       display: flex;
       flex-direction: column;
-      gap: 11px;
+      gap: 10px;
       transition: all 0.5s ease;
     }
 
@@ -153,9 +168,9 @@
     }
 
     body.theme-night .ios-weather-wide {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: rgba(255, 255, 255, 0.08);
-      color: #9ca3af;
+      background: rgba(255, 255, 255, 0.035);
+      border-color: rgba(255, 255, 255, 0.09);
+      color: #a1a7b3;
       box-shadow: none;
     }
 
@@ -166,7 +181,6 @@
       box-shadow: 0 0 24px rgba(44, 230, 200, 0.08);
     }
 
-    /* 上半部左右對齊結構（比照附圖） */
     .w-top {
       display: flex;
       justify-content: space-between;
@@ -179,7 +193,7 @@
     }
 
     .w-city-row {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
       letter-spacing: 0.2px;
       display: flex;
@@ -188,7 +202,7 @@
     }
 
     .w-temp-huge {
-      font-size: 46px;
+      font-size: 42px;
       font-weight: 300;
       line-height: 1.05;
       letter-spacing: -1.5px;
@@ -204,26 +218,25 @@
     }
 
     .w-icon-sm {
-      font-size: 22px;
+      font-size: 21px;
       line-height: 1.1;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .w-cond-text {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       opacity: 0.95;
     }
 
     .w-hl-text {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
       opacity: 0.85;
       margin-top: 2px;
       font-variant-numeric: tabular-nums;
     }
 
-    /* 下半部 6 小時逐時預報橫排（比照附圖） */
     .w-hourly-row {
       display: flex;
       justify-content: space-between;
@@ -236,29 +249,29 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       min-width: 42px;
     }
 
     .w-h-time {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       opacity: 0.78;
       font-variant-numeric: tabular-nums;
     }
 
     .w-h-icon {
-      font-size: 17px;
+      font-size: 16px;
       line-height: 1.1;
     }
 
     .w-h-temp {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       font-variant-numeric: tabular-nums;
     }
 
-    /* ================= 中央超大時鐘舞台 ================= */
+    /* ================= 中央時鐘舞台（黃金比例動態縮放） ================= */
     .clock-stage {
       flex: 1;
       width: 100%;
@@ -272,36 +285,50 @@
     .flip-clock-group {
       display: flex;
       align-items: center;
-      gap: 22px;
+      justify-content: center;
     }
 
     .lcd-screen-inner {
       display: flex;
       align-items: center;
-      gap: 22px;
+      justify-content: center;
+      gap: 2.2vw;
     }
 
+    /* 預設（有天氣卡片時）：比例收斂得宜，不擁擠 */
     .flip-unit {
       position: relative;
-      width: 295px;
-      height: 360px;
+      width: 28vw;
+      max-width: 340px;
+      height: 44vh;
+      max-height: 350px;
       border-radius: 26px;
       background: linear-gradient(180deg, #2b2d36 0%, #1d1e24 49.5%, #131418 50.5%, #1c1d23 100%);
       box-shadow:
-        0 26px 58px rgba(0, 0, 0, 0.85),
+        0 24px 54px rgba(0, 0, 0, 0.85),
         0 4px 12px rgba(0, 0, 0, 0.6),
         inset 0 1px 1px rgba(255, 255, 255, 0.18),
         inset 0 -2px 4px rgba(0, 0, 0, 0.65);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 245px;
+      font-size: 21vw;
       font-weight: 700;
-      letter-spacing: -6px;
+      letter-spacing: -0.6vw;
       color: #f3f4f6;
       text-shadow: 0 4px 12px rgba(0, 0, 0, 0.55);
       font-variant-numeric: tabular-nums;
       overflow: hidden;
+      transition: all 0.35s ease;
+    }
+
+    /* 純時鐘模式（無天氣卡片時）：滿版放大且視覺重心平衡 */
+    #app-container.mode-clock-only .flip-unit {
+      width: 34vw;
+      max-width: 420px;
+      height: 56vh;
+      max-height: 440px;
+      font-size: 25.5vw;
     }
 
     .flip-unit .hinge-line {
@@ -364,14 +391,14 @@
     /* 主題 2：擬物液晶座鐘 */
     body.theme-lcd .flip-clock-group {
       background: linear-gradient(145deg, #2c333d, #181c22);
-      padding: 22px 30px;
+      padding: 20px 28px;
       border-radius: 34px;
       border: 2px solid #38414d;
-      box-shadow: 0 28px 64px rgba(0, 0, 0, 0.85), inset 0 2px 3px rgba(255, 255, 255, 0.15);
+      box-shadow: 0 26px 60px rgba(0, 0, 0, 0.85), inset 0 2px 3px rgba(255, 255, 255, 0.15);
     }
     body.theme-lcd .lcd-screen-inner {
       background: linear-gradient(180deg, #8fa399 0%, #7d9187 100%);
-      padding: 24px 36px;
+      padding: 22px 34px;
       border-radius: 20px;
       box-shadow: inset 0 6px 16px rgba(0, 0, 0, 0.45), inset 0 0 0 2px rgba(0, 0, 0, 0.2);
     }
@@ -379,12 +406,16 @@
       background: transparent;
       box-shadow: none;
       width: auto;
-      height: 290px;
+      height: 36vh;
       color: #141c18;
       text-shadow: 3px 5px 0px rgba(20, 28, 24, 0.14);
       font-family: "Courier New", Courier, monospace;
       font-weight: 800;
-      font-size: 235px;
+      font-size: 19vw;
+    }
+    body.theme-lcd #app-container.mode-clock-only .flip-unit {
+      height: 46vh;
+      font-size: 22vw;
     }
     body.theme-lcd .hinge-line,
     body.theme-lcd .hinge-left,
@@ -394,24 +425,45 @@
     body.theme-lcd .sec-tag {
       color: #1e2923;
       position: static;
-      font-size: 28px;
+      font-size: 26px;
     }
 
-    /* 主題 3：極簡深色夜鐘 */
+    /* 主題 3：極簡深色夜鐘（緊湊高雅排版，不分散） */
+    body.theme-night .lcd-screen-inner {
+      gap: 1.6vw;
+    }
     body.theme-night .flip-unit {
       background: transparent;
       box-shadow: none;
       width: auto;
-      height: 320px;
-      color: #828894;
+      padding: 0 1.2vw;
+      height: 42vh;
+      color: #8a909c;
       text-shadow: none;
       font-weight: 600;
-      font-size: 265px;
+      font-size: 22vw;
+      letter-spacing: -0.5vw;
+    }
+    body.theme-night #app-container.mode-clock-only .flip-unit {
+      height: 52vh;
+      font-size: 26vw;
     }
     body.theme-night .hinge-line,
     body.theme-night .hinge-left,
     body.theme-night .hinge-right,
     body.theme-night .top-gloss { display: none; }
+    body.theme-night .ampm-tag {
+      left: 1.4vw;
+      bottom: 2vh;
+      font-size: 20px;
+      color: #5b616e;
+    }
+    body.theme-night .sec-tag {
+      right: 1.4vw;
+      bottom: 2vh;
+      font-size: 22px;
+      color: #5b616e;
+    }
 
     /* 主題 4：復古 VFD 螢光管 */
     body.theme-vfd .flip-unit {
@@ -427,11 +479,14 @@
     body.theme-vfd .ampm-tag, body.theme-vfd .sec-tag { color: #2ce6c8; }
 
     .colon-sep {
-      font-size: 145px;
+      font-size: 13vw;
       font-weight: 700;
       opacity: 0.65;
-      padding-bottom: 20px;
+      padding-bottom: 2vh;
       animation: colonBlink 2s infinite;
+    }
+    #app-container.mode-clock-only .colon-sep {
+      font-size: 15vw;
     }
     body.theme-lcd .colon-sep { color: #141c18; }
     body.theme-vfd .colon-sep { color: #34f5d6; text-shadow: 0 0 18px rgba(52, 245, 214, 0.75); }
@@ -536,7 +591,7 @@
   <div id="dim-overlay"></div>
 
   <div id="app-container">
-    <!-- 頂部列：左側日期與充電狀態 + 右上角 iOS 15 寬版天氣卡片 -->
+    <!-- 頂部列 -->
     <div class="top-header-row">
       <div class="left-pills">
         <div class="ios-pill" id="date-pill">
@@ -663,11 +718,11 @@
       var lastMin = "";
 
       var state = {
-        theme: localStorage.getItem("ipad_clock_theme_v4") || "theme-flip",
-        city: localStorage.getItem("ipad_clock_city_v4") || "25.066,121.662,汐止區",
-        scale: parseInt(localStorage.getItem("ipad_clock_scale_v4") || "100", 10),
-        dim: parseInt(localStorage.getItem("ipad_clock_dim_v4") || "0", 10),
-        toggles: JSON.parse(localStorage.getItem("ipad_clock_toggles_v4") || '{"year":true,"month":true,"day":true,"week":true,"lunar":true,"battery":true,"weather":true}')
+        theme: localStorage.getItem("ipad_clock_theme_v5") || "theme-flip",
+        city: localStorage.getItem("ipad_clock_city_v5") || "25.066,121.662,汐止區",
+        scale: parseInt(localStorage.getItem("ipad_clock_scale_v5") || "100", 10),
+        dim: parseInt(localStorage.getItem("ipad_clock_dim_v5") || "0", 10),
+        toggles: JSON.parse(localStorage.getItem("ipad_clock_toggles_v5") || '{"year":true,"month":true,"day":true,"week":true,"lunar":true,"battery":true,"weather":true}')
       };
 
       function triggerFlip(cardId) {
@@ -775,7 +830,6 @@
               document.getElementById("w-desc").textContent = info.desc;
               document.getElementById("w-hl").textContent = "最高 " + maxT + "°  最低 " + minT + "°";
 
-              // 渲染未來 6 小時預報
               var nowHour = new Date().getHours();
               var html = "";
               for (var i = 1; i <= 6; i++) {
@@ -832,6 +886,10 @@
         }
         document.getElementById("date-pill").classList.toggle("hidden-item", !anyDateOn);
         document.getElementById("battery-pill").classList.toggle("hidden-item", !state.toggles.battery);
+
+        // 切換純時鐘模式與天氣並存模式的黃金比例樣式
+        var appContainer = document.getElementById("app-container");
+        appContainer.classList.toggle("mode-clock-only", !state.toggles.weather);
       }
 
       var hideTimer = null;
@@ -860,14 +918,14 @@
       for (var i = 0; i < themeBtns.length; i++) {
         themeBtns[i].addEventListener("click", function () {
           state.theme = this.getAttribute("data-theme");
-          localStorage.setItem("ipad_clock_theme_v4", state.theme);
+          localStorage.setItem("ipad_clock_theme_v5", state.theme);
           applyState();
         });
       }
 
       document.getElementById("city-select").addEventListener("change", function () {
         state.city = this.value;
-        localStorage.setItem("ipad_clock_city_v4", state.city);
+        localStorage.setItem("ipad_clock_city_v5", state.city);
         fetchWeather();
       });
 
@@ -876,20 +934,20 @@
         toggleBtns[j].addEventListener("click", function () {
           var key = this.getAttribute("data-toggle");
           state.toggles[key] = !state.toggles[key];
-          localStorage.setItem("ipad_clock_toggles_v4", JSON.stringify(state.toggles));
+          localStorage.setItem("ipad_clock_toggles_v5", JSON.stringify(state.toggles));
           applyState();
         });
       }
 
       document.getElementById("scale-slider").addEventListener("input", function () {
         state.scale = parseInt(this.value, 10);
-        localStorage.setItem("ipad_clock_scale_v4", state.scale);
+        localStorage.setItem("ipad_clock_scale_v5", state.scale);
         applyState();
       });
 
       document.getElementById("dim-slider").addEventListener("input", function () {
         state.dim = parseInt(this.value, 10);
-        localStorage.setItem("ipad_clock_dim_v4", state.dim);
+        localStorage.setItem("ipad_clock_dim_v5", state.dim);
         applyState();
       });
 
