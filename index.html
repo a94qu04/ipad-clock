@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="StandBy 桌面時鐘" />
+  <title>StandBy 旗艦桌面待機時鐘</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+</head>
+<body class="theme-flip">
+
+  <div id="dim-overlay"></div>
+
+  <div id="app-container">
+    <!-- 頂部資訊與小工具列 -->
+    <div class="top-header-row">
+      <div class="left-pills">
+        <div class="ios-pill" id="date-pill">
+          <span id="disp-year"></span>
+          <span id="disp-month"></span>
+          <span id="disp-day"></span>
+          <span id="disp-week" class="ios-chip"></span>
+          <span id="disp-lunar" class="ios-chip"></span>
+        </div>
+
+        <div class="ios-pill" id="battery-pill">
+          <span id="disp-battery" class="battery-charging">⚡ 桌面插電待機</span>
+        </div>
+      </div>
+
+      <!-- 右上角 iOS 15 2x1 寬版天氣小工具 -->
+      <div class="ios-weather-wide" id="disp-weather">
+        <div class="w-top">
+          <div class="w-top-left">
+            <div class="w-city-row"><span id="w-city-name">汐止區</span> <span style="font-size:12px;">📍</span></div>
+            <div class="w-temp-huge" id="w-temp">--°</div>
+          </div>
+          <div class="w-top-right">
+            <div class="w-icon-sm" id="w-icon">⛅</div>
+            <div class="w-cond-text" id="w-desc">載入氣象中</div>
+            <div class="w-hl-text" id="w-hl">最高 --°  最低 --°</div>
+          </div>
+        </div>
+
+        <div class="w-hourly-row" id="w-hourly-list">
+          <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
+          <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
+          <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
+          <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
+          <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
+          <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 中央大尺寸時鐘舞台 -->
+    <div class="clock-stage" id="clock-stage">
+      <div class="flip-clock-group">
+        <div class="lcd-screen-inner">
+          <div class="flip-unit" id="card-hours">
+            <div class="top-gloss"></div>
+            <div class="hinge-line"></div>
+            <div class="hinge-left"></div>
+            <div class="hinge-right"></div>
+            <span id="hours">00</span>
+            <span class="ampm-tag" id="ampm">AM</span>
+          </div>
+
+          <div class="colon-sep">:</div>
+
+          <div class="flip-unit" id="card-minutes">
+            <div class="top-gloss"></div>
+            <div class="hinge-line"></div>
+            <div class="hinge-left"></div>
+            <div class="hinge-right"></div>
+            <span id="minutes">00</span>
+            <span class="sec-tag" id="seconds">00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部場景互動小工具列 -->
+    <div class="bottom-widgets" id="bottom-widgets">
+      <div class="widget-box" id="disp-pomodoro">
+        <span>🍅 專注</span>
+        <span class="pomo-time" id="pomo-display">25:00</span>
+        <button class="mini-btn" id="pomo-start">開始</button>
+        <button class="mini-btn" id="pomo-reset">重設</button>
+      </div>
+
+      <div class="widget-box" id="disp-memo">
+        <span>📌</span>
+        <input type="text" class="memo-input" id="memo-input" placeholder="點擊輸入今日桌面目標或提醒..." />
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部控制面板 -->
+  <div id="control-panel">
+    <div class="ctrl-row">
+      <span class="ctrl-label">外觀主題</span>
+      <button class="btn active" data-theme="theme-flip">機械翻頁鐘</button>
+      <button class="btn" data-theme="theme-lcd">擬物液晶座鐘</button>
+      <button class="btn" data-theme="theme-night">極簡深色夜鐘</button>
+      <button class="btn" data-theme="theme-vfd">復古 VFD 螢光管</button>
+      <button class="btn" data-theme="theme-red">護眼紅光夜視</button>
+    </div>
+
+    <div class="ctrl-row">
+      <span class="ctrl-label">顯示資訊</span>
+      <button class="btn active" data-toggle="year">年</button>
+      <button class="btn active" data-toggle="month">月</button>
+      <button class="btn active" data-toggle="day">日</button>
+      <button class="btn active" data-toggle="week">星期</button>
+      <button class="btn active" data-toggle="lunar">農曆</button>
+      <button class="btn active" data-toggle="battery">充電狀態</button>
+      <button class="btn active" data-toggle="weather">天氣卡片</button>
+      <button class="btn active" data-toggle="pomodoro">番茄鐘</button>
+      <button class="btn active" data-toggle="memo">桌面便籤</button>
+    </div>
+
+    <div class="ctrl-row">
+      <span class="ctrl-label">環境輔助</span>
+      <select class="city-select" id="city-select">
+        <option value="25.066,121.662,汐止區">📍 新北汐止</option>
+        <option value="25.033,121.565,台北市">📍 台北市</option>
+        <option value="24.993,121.301,桃園市">📍 桃園市</option>
+        <option value="24.806,120.968,新竹市">📍 新竹市</option>
+        <option value="24.147,120.673,台中市">📍 台中市</option>
+        <option value="22.999,120.227,台南市">📍 台南市</option>
+        <option value="22.627,120.301,高雄市">📍 高雄市</option>
+      </select>
+      <button class="btn" id="btn-noise">🌧️ 助眠雨聲：關</button>
+      <button class="btn" id="btn-chime">🔔 整點報時：關</button>
+      <button class="btn" id="btn-wakelock">⚡ 螢幕恆亮</button>
+    </div>
+
+    <div class="ctrl-row">
+      <div class="slider-wrap">
+        <span class="ctrl-label">時鐘大小</span>
+        <input type="range" id="scale-slider" min="60" max="140" value="100" />
+        <span class="val-text" id="scale-val">100%</span>
+      </div>
+
+      <div class="slider-wrap">
+        <span class="ctrl-label">夜間調光</span>
+        <input type="range" id="dim-slider" min="0" max="80" value="0" />
+        <span class="val-text" id="dim-val">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 隱藏無聲循環影片（防舊版 iOS 休眠） -->
+  <video id="wake-video" loop muted playsinline style="width:1px;height:1px;opacity:0.01;position:fixed;bottom:0;left:0;">
+    <source src="data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAAu1tZGF0AAACrgYF//+q3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE0OCByMjc5NSBhYWE5YWE4IC0gSC4yNjQvTVBFRy00IEFWQyBjb2RlYyAtIENvcHlyaWdodCAyMDAzLTIwMTcgLSBodHRwOi8vd3d3LnZpZGVvbGFuLm9yZy94MjY0Lmh0bWwgLSBvbnB0aW9uczogY2FiYWM9MSByZWY9MyBkZWJsb2NrPTE6MDowIGFuYWx5c2U9MHgzOjB4MTEzIG1lPWhleCBzdWJtZT03IHBzeT0xIHBzeV9yZD0xLjAwOjAuMDAgbWl4ZWRfcmVmPTEgbWVfcmFuZ2U9MTYgY2hyb21hX21lPTEgdHJlbGxpcz0xIDh4OGRjdD0xIGNxbT0wIGRlYWR6b25lPTIxLDExIGZhc3RfcHNraXA9MSBjaHJvbWFfcXBfb2Zmc2V0PS0yIHRocmVhZHM9NiBsb29rYWhlYWRfdGhyZWFkcz0xIHNsaWNlZF90aHJlYWRzPTAgbnI9MCBkZWNpbWF0ZT0xIGludGVybGFjZWQ9MCBibHVyYXlfY29tcGF0PTAgY29uc3RyYWluZWRfaW50cmE9MCBiZnJhbWVzPTMgYl9weXJhbWlkPTIgYl9hZGFwdD0xIGJfYmlhcz0wIGRpcmVjdD0xIHdlaWdodGI9MSBvcGVuX2dvcD0wIHdlaWdodHA9MiBrZXlpbnQ9MjUwIGtleWludF9taW49MjUgc2NlbmVjdXQ9NDAgaW50cmFfcmVmcmVzaD0wIHJjX2xvb2thaGVhZD00MCByYz1jcmYgbWJ0cmVlPTEgY3JmPTIzLjAgcWNvbXA9MC42MCBxcG1pbj0wIHFwbWF4PTY5IHFwc3RlcD00IGlwX3JhdGlvPTEuNDAgYXE9MToxLjAwAIAAAAADZWIEl//+q3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE0OCByMjc5NSBhYWE5YWE4IC0gSC4yNjQvTVBFRy00IEFWQyBjb2RlYyAtIENvcHlyaWdodCAyMDAzLTIwMTcgLSBodHRwOi8vd3d3LnZpZGVvbGFuLm9yZy94MjY0Lmh0bWwgLSBvbnB0aW9uczogY2FiYWM9MSByZWY9MyBkZWJsb2NrPTE6MDowIGFuYWx5c2U9MHgzOjB4MTEzIG1lPWhleCBzdWJtZT03IHBzeT0xIHBzeV9yZD0xLjAwOjAuMDAgbWl4ZWRfcmVmPTEgbWVfcmFuZ2U9MTYgY2hyb21hX21lPTEgdHJlbGxpcz0xIDh4OGRjdD0xIGNxbT0wIGRlYWR6b25lPTIxLDExIGZhc3RfcHNraXA9MSBjaHJvbWFfcXBfb2Zmc2V0PS0yIHRocmVhZHM9NiBsb29rYWhlYWRfdGhyZWFkcz0xIHNsaWNlZF90aHJlYWRzPTAgbnI9MCBkZWNpbWF0ZT0xIGludGVybGFjZWQ9MCBibHVyYXlfY29tcGF0PTAgY29uc3RyYWluZWRfaW50cmE9MCBiZnJhbWVzPTMgYl9weXJhbWlkPTIgYl9hZGFwdD0xIGJfYmlhcz0wIGRpcmVjdD0xIHdlaWdodGI9MSBvcGVuX2dvcD0wIHdlaWdodHA9MiBrZXlpbnQ9MjUwIGtleWludF9taW49MjUgc2NlbmVjdXQ9NDAgaW50cmFfcmVmcmVzaD0wIHJjX2xvb2thaGVhZD00MCByYz1jcmYgbWJ0cmVlPTEgY3JmPTIzLjAgcWNvbXA9MC42MCBxcG1pbj0wIHFwbWF4PTY5IHFwc3RlcD00IGlwX3JhdGlvPTEuNDAgYXE9MToxLjAwAIAAAAADZWIEl//+q3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE0OCByMjc5NSBhYWE5YWE4IC0gSC4yNjQvTVBFRy00IEFWQyBjb2RlYyAtIENvcHlyaWdodCAyMDAzLTIwMTcgLSBodHRwOi8vd3d3LnZpZGVvbGFuLm9yZy94MjY0Lmh0bWwgLSBvbnB0aW9uczogY2FiYWM9MSByZWY9MyBkZWJsb2NrPTE6MDowIGFuYWx5c2U9MHgzOjB4MTEzIG1lPWhleCBzdWJtZT03IHBzeT0xIHBzeV9yZD0xLjAwOjAuMDAgbWl4ZWRfcmVmPTEgbWVfcmFuZ2U9MTYgY2hyb21hX21lPTEgdHJlbGxpcz0xIDh4OGRjdD0xIGNxbT0wIGRlYWR6b25lPTIxLDExIGZhc3RfcHNraXA9MSBjaHJvbWFfcXBfb2Zmc2V0PS0yIHRocmVhZHM9NiBsb29rYWhlYWRfdGhyZWFkcz0xIHNsaWNlZF90aHJlYWRzPTAgbnI9MCBkZWNpbWF0ZT0xIGludGVybGFjZWQ9MCBibHVyYXlfY29tcGF0PTAgY29uc3RyYWluZWRfaW50cmE9MCBiZnJhbWVzPTMgYl9weXJhbWlkPTIgYl9hZGFwdD0xIGJfYmlhcz0wIGRpcmVjdD0xIHdlaWdodGI9MSBvcGVuX2dvcD0wIHdlaWdodHA9MiBrZXlpbnQ9MjUwIGtleWludF9taW49MjUgc2NlbmVjdXQ9NDAgaW50cmFfcmVmcmVzaD0wIHJjX2xvb2thaGVhZD00MCByYz1jcmYgbWJ0cmVlPTEgY3JmPTIzLjAgcWNvbXA9MC42MCBxcG1pbj0wIHFwbWF4PTY5IHFwc3RlcD00IGlwX3JhdGlvPTEuNDAgYXE9MToxLjAw" type="video/mp4" />
+  </video>
+
+  <script src="js/weather-audio.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
