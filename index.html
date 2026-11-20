@@ -46,7 +46,7 @@
       -webkit-box-pack: justify;
       -webkit-flex-pack: justify;
       justify-content: space-between;
-      padding: 20px 28px;
+      padding: 12px 24px 14px 24px;
       -webkit-transition: background-color 0.5s ease, color 0.5s ease, -webkit-transform 2s ease-in-out;
       transition: background-color 0.5s ease, color 0.5s ease, transform 2s ease-in-out;
     }
@@ -168,7 +168,7 @@
     }
 
     /* ==========================================================================
-       頂部狀態列
+       頂部狀態列 (精簡整合日期、農曆與電量，約佔畫面 8% 高度)
        ========================================================================== */
     .top-bar {
       display: -webkit-box;
@@ -180,15 +180,27 @@
       -webkit-box-align: center;
       -webkit-flex-align: center;
       align-items: center;
-      font-size: 15px;
-      letter-spacing: 0.5px;
+      height: 36px;
+      font-size: 16px;
+      letter-spacing: 0.8px;
       z-index: 10;
+    }
+
+    .top-date-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: #d4d4dc;
+      letter-spacing: 1px;
+    }
+
+    body.theme-night .top-date-text {
+      color: #b83227;
     }
 
     .status-pill {
       display: inline-block;
-      padding: 6px 14px;
-      border-radius: 20px;
+      padding: 5px 14px;
+      border-radius: 18px;
       background: rgba(255, 255, 255, 0.06);
       font-size: 13px;
       color: #a8a8b0;
@@ -222,9 +234,12 @@
     }
 
     /* ==========================================================================
-       中央時鐘主視覺區塊
+       中央時鐘主視覺區塊 (橫式主視覺佔畫面 65% ~ 70% 高度)
        ========================================================================== */
     .clock-center-area {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
       display: -webkit-box;
       display: -webkit-flex;
       display: flex;
@@ -238,20 +253,8 @@
       -webkit-box-pack: center;
       -webkit-flex-pack: center;
       justify-content: center;
-      margin: auto 0;
-    }
-
-    .date-header {
-      font-size: 22px;
-      font-weight: 500;
-      margin-bottom: 16px;
-      letter-spacing: 1.5px;
-      color: #c5c5cc;
-      text-align: center;
-    }
-
-    body.theme-night .date-header {
-      color: #9e2b21;
+      width: 100%;
+      padding: 6px 0;
     }
 
     .flip-clock-row {
@@ -264,13 +267,15 @@
       -webkit-box-pack: center;
       -webkit-flex-pack: center;
       justify-content: center;
+      width: 100%;
     }
 
     .flip-card {
       position: relative;
-      width: 240px;
-      height: 250px;
-      border-radius: 22px;
+      width: 39%;
+      max-width: 440px;
+      height: 360px;
+      border-radius: 28px;
       display: -webkit-box;
       display: -webkit-flex;
       display: flex;
@@ -280,11 +285,13 @@
       -webkit-box-pack: center;
       -webkit-flex-pack: center;
       justify-content: center;
-      font-size: 165px;
+      font-size: 245px;
       font-weight: 700;
       line-height: 1;
-      letter-spacing: -4px;
+      letter-spacing: -6px;
       overflow: hidden;
+      -webkit-transition: all 0.35s ease;
+      transition: all 0.35s ease;
     }
 
     /* 翻頁鐘中間機械轉軸線與左右金屬卡榫 */
@@ -316,34 +323,59 @@
     /* 上午/下午 標示 (12小時制時顯示) */
     .ampm-tag {
       position: absolute;
-      top: 16px;
-      left: 18px;
-      font-size: 16px;
+      top: 18px;
+      left: 22px;
+      font-size: 19px;
       font-weight: 700;
       letter-spacing: 1px;
-      opacity: 0.75;
+      opacity: 0.8;
       z-index: 5;
     }
 
     /* 秒數角標 */
     .seconds-tag {
       position: absolute;
-      bottom: 14px;
-      right: 18px;
-      font-size: 24px;
+      bottom: 16px;
+      right: 22px;
+      font-size: 32px;
       font-weight: 600;
       letter-spacing: 0;
-      opacity: 0.65;
+      opacity: 0.72;
       z-index: 5;
     }
 
     .colon-separator {
-      font-size: 95px;
+      font-size: 130px;
       font-weight: 700;
-      margin: 0 16px;
-      opacity: 0.55;
+      margin: 0 18px;
+      opacity: 0.6;
       -webkit-animation: pulseColon 2s infinite;
       animation: pulseColon 2s infinite;
+    }
+
+    /* 純淨大鐘模式 (隱藏底部天氣與工具列，時鐘進一步放大佔滿全螢幕) */
+    body.pure-clock-mode .bottom-widgets {
+      display: none !important;
+    }
+
+    body.pure-clock-mode .flip-card {
+      width: 42%;
+      max-width: 500px;
+      height: 460px;
+      font-size: 310px;
+      border-radius: 34px;
+    }
+
+    body.pure-clock-mode .seconds-tag {
+      font-size: 40px;
+      bottom: 20px;
+      right: 26px;
+    }
+
+    body.pure-clock-mode .ampm-tag {
+      font-size: 22px;
+      top: 22px;
+      left: 26px;
     }
 
     @-webkit-keyframes pulseColon {
@@ -373,7 +405,7 @@
     }
 
     /* ==========================================================================
-       底部資訊卡片區 (天氣 + 桌面便籤 / 番茄鐘 / 語錄)
+       底部資訊卡片區 (扁平橫向精簡資訊列，約佔畫面 18% 高度)
        ========================================================================== */
     .bottom-widgets {
       display: -webkit-box;
@@ -386,13 +418,14 @@
       -webkit-flex-align: stretch;
       align-items: stretch;
       width: 100%;
-      max-width: 960px;
+      max-width: 100%;
+      height: 92px;
       margin: 0 auto;
     }
 
     .widget-card {
-      border-radius: 18px;
-      padding: 16px 20px;
+      border-radius: 16px;
+      padding: 10px 18px;
       display: -webkit-box;
       display: -webkit-flex;
       display: flex;
@@ -402,7 +435,7 @@
     }
 
     .weather-card {
-      width: 48%;
+      width: 49%;
       -webkit-box-pack: justify;
       -webkit-flex-pack: justify;
       justify-content: space-between;
@@ -418,9 +451,9 @@
     }
 
     .weather-icon-box {
-      width: 54px;
-      height: 54px;
-      margin-right: 14px;
+      width: 46px;
+      height: 46px;
+      margin-right: 12px;
       display: -webkit-box;
       display: -webkit-flex;
       display: flex;
@@ -433,27 +466,27 @@
     }
 
     .temp-main {
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 700;
-      line-height: 1.1;
+      line-height: 1.05;
     }
 
     .weather-desc {
-      font-size: 14px;
+      font-size: 13px;
       color: #a0a0a8;
-      margin-top: 3px;
+      margin-top: 2px;
     }
 
     .weather-right {
       text-align: right;
-      font-size: 13px;
-      line-height: 1.65;
+      font-size: 12px;
+      line-height: 1.45;
       color: #a0a0a8;
     }
 
     /* 右側多功能互動卡片 (語錄 / 便籤 / 番茄鐘切換) */
     .side-card {
-      width: 49%;
+      width: 49.5%;
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
       -webkit-flex-direction: column;
@@ -461,9 +494,9 @@
       -webkit-box-align: stretch;
       -webkit-flex-align: stretch;
       align-items: stretch;
-      -webkit-box-pack: justify;
-      -webkit-flex-pack: justify;
-      justify-content: space-between;
+      -webkit-box-pack: center;
+      -webkit-flex-pack: center;
+      justify-content: center;
       cursor: pointer;
     }
 
@@ -479,15 +512,15 @@
       align-items: center;
       font-size: 12px;
       color: #8e8e98;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .side-tab-btn {
       background: rgba(255, 255, 255, 0.08);
       border: none;
       color: inherit;
-      padding: 3px 9px;
-      border-radius: 10px;
+      padding: 2px 8px;
+      border-radius: 9px;
       font-size: 11px;
       margin-left: 4px;
       cursor: pointer;
@@ -505,9 +538,9 @@
     }
 
     .side-card-body {
-      font-size: 15px;
-      line-height: 1.45;
-      min-height: 44px;
+      font-size: 14px;
+      line-height: 1.35;
+      min-height: 34px;
       display: -webkit-box;
       display: -webkit-flex;
       display: flex;
@@ -706,23 +739,43 @@
     }
 
     /* ==========================================================================
-       響應式適配 (直向 iPad 與小螢幕手機預覽)
+       響應式適配 (針對舊版 iPad 1024x768 橫向、iPad Pro 橫向及直向與小螢幕微調)
        ========================================================================== */
-    @media screen and (max-width: 768px) {
+    @media screen and (orientation: landscape) and (min-width: 900px) {
       .flip-card {
-        width: 148px;
-        height: 165px;
-        font-size: 102px;
+        width: 40%;
+        max-width: 460px;
+        height: 410px;
+        font-size: 275px;
+      }
+      body.pure-clock-mode .flip-card {
+        width: 43%;
+        max-width: 520px;
+        height: 520px;
+        font-size: 345px;
+      }
+    }
+
+    @media screen and (max-width: 767px) {
+      .top-date-text {
+        font-size: 14px;
+      }
+      .flip-card {
+        width: 42%;
+        height: 170px;
+        font-size: 108px;
         border-radius: 16px;
+      }
+      body.pure-clock-mode .flip-card {
+        height: 220px;
+        font-size: 140px;
       }
       .colon-separator {
         font-size: 56px;
         margin: 0 8px;
       }
-      .date-header {
-        font-size: 17px;
-      }
       .bottom-widgets {
+        height: auto;
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
         -webkit-flex-direction: column;
@@ -730,17 +783,18 @@
       }
       .weather-card, .side-card {
         width: 100%;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
       }
     }
 
     @media screen and (orientation: portrait) and (min-width: 700px) {
       .flip-card {
-        width: 280px;
-        height: 300px;
-        font-size: 195px;
+        width: 42%;
+        height: 310px;
+        font-size: 200px;
       }
       .bottom-widgets {
+        height: auto;
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
         -webkit-flex-direction: column;
@@ -748,7 +802,7 @@
       }
       .weather-card, .side-card {
         width: 100%;
-        margin-bottom: 14px;
+        margin-bottom: 12px;
       }
     }
   </style>
@@ -768,24 +822,20 @@
 
   <!-- 主畫面結構 -->
   <div id="app-wrapper">
-    <!-- 頂部狀態列 -->
+    <!-- 頂部極簡狀態列 (左側日期星期，右側農曆與電量/狀態) -->
     <div class="top-bar">
-      <div class="status-pill" id="awake-status-pill">
-        <span class="awake-badge" id="awake-dot"></span>
-        <span id="awake-text">點擊螢幕開啟設定面板</span>
-      </div>
+      <div class="top-date-text" id="date-display">2026年11月20日 星期五</div>
 
       <div class="status-pill" id="system-status-pill">
-        <span id="burnin-indicator">防烙印微移：開啟</span>
+        <span class="awake-badge" id="awake-dot"></span>
+        <span id="lunar-display">農曆十月十二</span>
         <span style="margin: 0 6px; opacity: 0.4;">|</span>
         <span id="battery-text">充電待機中</span>
       </div>
     </div>
 
-    <!-- 中央時鐘主視覺 -->
+    <!-- 中央超大時鐘主視覺 -->
     <div class="clock-center-area">
-      <div class="date-header" id="date-display">2026年11月20日 星期五 · 農曆十月十二</div>
-
       <div class="flip-clock-row">
         <!-- 小時翻頁卡 -->
         <div class="flip-card" id="card-hour">
@@ -798,14 +848,14 @@
 
         <!-- 分鐘翻頁卡 -->
         <div class="flip-card" id="card-minute">
-          <span id="minute-digits">21</span>
+          <span id="minute-digits">53</span>
           <span class="seconds-tag" id="second-digits">00</span>
           <div class="flip-hinge"></div>
         </div>
       </div>
     </div>
 
-    <!-- 底部天氣與桌面工具列 -->
+    <!-- 底部橫向精簡天氣與桌面工具列 -->
     <div class="bottom-widgets">
       <!-- 天氣資訊卡片 -->
       <div class="widget-card weather-card" id="weather-widget">
@@ -881,6 +931,7 @@
 
       <!-- 螢幕保護與恆亮功能 -->
       <div class="control-group">
+        <button type="button" class="ctrl-btn" id="btn-pure-mode">純淨大鐘：關</button>
         <button type="button" class="ctrl-btn active" id="btn-burnin">防烙印微移：開</button>
         <button type="button" class="ctrl-btn" id="btn-awake">啟動螢幕恆亮</button>
         <button type="button" class="ctrl-btn" id="btn-fullscreen">全螢幕</button>
@@ -909,6 +960,7 @@
       var state = {
         theme: 'theme-flip',
         is24Hour: true,
+        pureClockMode: false,
         burnInProtection: true,
         keepAwakeActive: false,
         dimLevel: 0,
@@ -940,10 +992,12 @@
         try {
           var savedTheme = localStorage.getItem('retro_ipad_theme');
           var saved24 = localStorage.getItem('retro_ipad_24h');
+          var savedPure = localStorage.getItem('retro_ipad_pure');
           var savedMemo = localStorage.getItem('retro_ipad_memo');
           var savedCity = localStorage.getItem('retro_ipad_city');
           if (savedTheme) state.theme = savedTheme;
           if (saved24 !== null) state.is24Hour = (saved24 === 'true');
+          if (savedPure !== null) state.pureClockMode = (savedPure === 'true');
           if (savedMemo) state.memoText = savedMemo;
           if (savedCity) {
             var parts = savedCity.split(',');
@@ -1012,7 +1066,8 @@
         var lunarInfo = getLunarOrPeriodText(now);
 
         document.getElementById('date-display').textContent =
-          year + '年' + month + '月' + day + '日 ' + weekStr + ' · ' + lunarInfo;
+          year + '年' + month + '月' + day + '日 ' + weekStr;
+        document.getElementById('lunar-display').textContent = lunarInfo;
 
         var rawHours = now.getHours();
         var minutes = now.getMinutes();
@@ -1223,15 +1278,15 @@
 
       // ========================================================================
       // 螢幕防烙印微移保護 (Burn-in Pixel Shift)
-      // 每 90 秒極其緩慢地微調畫面座標 (-6px ~ +6px)
+      // 每 90 秒極其緩慢地微調畫面座標 (-3px ~ +3px)
       // ========================================================================
       var shiftStep = 0;
       var shiftOffsets = [
         { x: 0, y: 0 },
-        { x: 5, y: 3 },
-        { x: 3, y: -5 },
-        { x: -5, y: -3 },
-        { x: -3, y: 5 }
+        { x: 3, y: 2 },
+        { x: 2, y: -3 },
+        { x: -3, y: -2 },
+        { x: -2, y: 3 }
       ];
 
       setInterval(function() {
@@ -1254,7 +1309,6 @@
       function toggleKeepAwake() {
         var video = document.getElementById('keep-awake-video');
         var dot = document.getElementById('awake-dot');
-        var text = document.getElementById('awake-text');
         var btn = document.getElementById('btn-awake');
 
         if (!state.keepAwakeActive) {
@@ -1264,7 +1318,6 @@
               playPromise.then(function() {
                 state.keepAwakeActive = true;
                 dot.className = 'awake-badge active';
-                text.textContent = '螢幕恆亮模式已啟動';
                 btn.className = 'ctrl-btn active';
                 btn.textContent = '恆亮已啟動';
                 showToast('已啟動螢幕防休眠模式，建議插上電源使用');
@@ -1274,7 +1327,6 @@
             } else {
               state.keepAwakeActive = true;
               dot.className = 'awake-badge active';
-              text.textContent = '螢幕恆亮模式已啟動';
               btn.className = 'ctrl-btn active';
               btn.textContent = '恆亮已啟動';
               showToast('已啟動螢幕防休眠模式');
@@ -1286,7 +1338,6 @@
           video.pause();
           state.keepAwakeActive = false;
           dot.className = 'awake-badge';
-          text.textContent = '點擊螢幕開啟設定面板';
           btn.className = 'ctrl-btn';
           btn.textContent = '啟動螢幕恆亮';
           showToast('已關閉網頁恆亮模式');
@@ -1336,15 +1387,34 @@
       // ========================================================================
       // 事件綁定與初始化
       // ========================================================================
+      function applyBodyClasses() {
+        var cls = state.theme;
+        if (state.pureClockMode) {
+          cls += ' pure-clock-mode';
+        }
+        document.body.className = cls;
+      }
+
       function applyTheme(themeName) {
         state.theme = themeName;
-        document.body.className = themeName;
+        applyBodyClasses();
         saveSetting('retro_ipad_theme', themeName);
 
         var themeBtns = document.querySelectorAll('[data-theme]');
         for (var i = 0; i < themeBtns.length; i++) {
           var b = themeBtns[i];
           b.className = (b.getAttribute('data-theme') === themeName) ? 'ctrl-btn active' : 'ctrl-btn';
+        }
+      }
+
+      function applyPureClockMode(isPure) {
+        state.pureClockMode = isPure;
+        applyBodyClasses();
+        saveSetting('retro_ipad_pure', isPure);
+        var btnPure = document.getElementById('btn-pure-mode');
+        if (btnPure) {
+          btnPure.className = isPure ? 'ctrl-btn active' : 'ctrl-btn';
+          btnPure.textContent = isPure ? '純淨大鐘：開' : '純淨大鐘：關';
         }
       }
 
@@ -1407,13 +1477,17 @@
           document.getElementById('dimmer-overlay').style.opacity = (val / 100).toFixed(2);
         });
 
+        // 純淨大鐘模式開關
+        document.getElementById('btn-pure-mode').addEventListener('click', function() {
+          applyPureClockMode(!state.pureClockMode);
+          showToast(state.pureClockMode ? '已開啟純淨大鐘模式（隱藏底部資訊）' : '已恢復顯示天氣與小工具列');
+        });
+
         // 防烙印開關
         document.getElementById('btn-burnin').addEventListener('click', function() {
           state.burnInProtection = !state.burnInProtection;
           this.className = state.burnInProtection ? 'ctrl-btn active' : 'ctrl-btn';
           this.textContent = state.burnInProtection ? '防烙印微移：開' : '防烙印微移：關';
-          document.getElementById('burnin-indicator').textContent =
-            state.burnInProtection ? '防烙印微移：開啟' : '防烙印微移：關閉';
         });
 
         // 螢幕恆亮按鈕
@@ -1482,6 +1556,7 @@
       window.onload = function() {
         loadSavedSettings();
         applyTheme(state.theme);
+        applyPureClockMode(state.pureClockMode);
         document.getElementById('btn-format').textContent = state.is24Hour ? '24小時制' : '12小時制';
         initEvents();
         initBatteryMonitor();
