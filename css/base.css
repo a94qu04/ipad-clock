@@ -37,33 +37,31 @@ html, body {
   transition: transform 1.5s ease-in-out;
 }
 
-/* 頂部列 */
+/* 頂部列（統一單列高度，確保中央時鐘視覺置中） */
 .top-header-row {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  z-index: 10;
-  gap: 14px;
+  align-items: center;
+  z-index: 30;
+  gap: 12px;
+  min-height: 40px;
 }
 
 #app-container.mode-clock-only .top-header-row {
   justify-content: center;
-  padding-top: 1vh;
 }
 
 .left-pills {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
 #app-container.mode-clock-only .left-pills {
-  flex-direction: row;
-  align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
 }
 
 .ios-pill {
@@ -76,51 +74,132 @@ html, body {
   border: 1px solid rgba(255, 255, 255, 0.11);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  font-size: clamp(13px, 1.5vw, 17px);
+  font-size: clamp(13px, 1.45vw, 16px);
   font-weight: 500;
+  color: inherit;
+  line-height: 1.25;
 }
 
 .ios-chip {
-  padding: 2px 9px;
+  padding: 2px 8px;
   border-radius: 7px;
-  font-size: clamp(12px, 1.2vw, 14px);
+  font-size: clamp(11px, 1.15vw, 13px);
   font-weight: 600;
   background: rgba(255, 255, 255, 0.09);
+  font-variant-numeric: tabular-nums;
 }
 
 .battery-charging { color: #34d399 !important; }
 
-/* 右上角寬版天氣卡片 */
-.ios-weather-wide {
-  width: clamp(260px, 32vw, 360px);
-  border-radius: 22px;
-  padding: 12px 16px;
-  color: #ffffff;
-  background: linear-gradient(155deg, #2b6cb0 0%, #1c3f70 55%, #122647 100%);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.3);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  transition: all 0.5s ease;
+/* 右上角精簡天氣膠囊 + 展開浮層（方案 A） */
+.weather-anchor {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
-.ios-weather-wide.sky-night { background: linear-gradient(155deg, #1b2845 0%, #0f172a 55%, #070b14 100%); border-color: rgba(255, 255, 255, 0.15); }
-.ios-weather-wide.sky-rain { background: linear-gradient(155deg, #3b4c5e 0%, #232f3d 55%, #151c26 100%); }
+.weather-pill {
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.weather-pill:hover {
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.weather-pill:active {
+  transform: scale(0.98);
+}
+
+.wp-city { font-weight: 600; }
+.wp-icon { font-size: 1.05em; line-height: 1; }
+.wp-temp { font-weight: 700; font-variant-numeric: tabular-nums; }
+.wp-caret {
+  font-size: 11px;
+  opacity: 0.65;
+  margin-left: -2px;
+  transition: transform 0.2s ease;
+}
+
+.weather-pill[aria-expanded="true"] .wp-caret {
+  transform: rotate(180deg);
+}
+
+.weather-popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: clamp(275px, 31vw, 355px);
+  border-radius: 22px;
+  padding: 14px 16px 12px;
+  color: #ffffff;
+  background: linear-gradient(155deg, rgba(43, 108, 176, 0.94) 0%, rgba(28, 63, 112, 0.96) 55%, rgba(18, 38, 71, 0.98) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(26px);
+  backdrop-filter: blur(26px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.78), inset 0 1px 1px rgba(255, 255, 255, 0.26);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 45;
+  animation: popoverIn 0.18s ease-out;
+}
+
+@keyframes popoverIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes popoverInPortrait {
+  from { opacity: 0; transform: translate(-50%, -6px) scale(0.98); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+.weather-popover.sky-night {
+  background: linear-gradient(155deg, rgba(27, 40, 69, 0.96) 0%, rgba(15, 23, 42, 0.98) 55%, rgba(7, 11, 20, 0.99) 100%);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.weather-popover.sky-rain {
+  background: linear-gradient(155deg, rgba(59, 76, 94, 0.96) 0%, rgba(35, 47, 61, 0.98) 55%, rgba(21, 28, 38, 0.99) 100%);
+}
 
 .w-top { display: flex; justify-content: space-between; align-items: flex-start; }
 .w-city-row { font-size: clamp(13px, 1.4vw, 16px); font-weight: 600; display: flex; align-items: center; gap: 4px; }
+.w-pin { font-size: 12px; }
 .w-temp-huge { font-size: clamp(34px, 3.8vw, 46px); font-weight: 300; line-height: 1.05; letter-spacing: -1.5px; margin-top: 2px; font-variant-numeric: tabular-nums; }
 .w-top-right { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
 .w-icon-sm { font-size: 20px; line-height: 1.1; margin-bottom: 2px; }
 .w-cond-text { font-size: 13px; font-weight: 600; opacity: 0.95; }
 .w-hl-text { font-size: 12px; font-weight: 500; opacity: 0.85; margin-top: 2px; font-variant-numeric: tabular-nums; }
 
-.w-hourly-row { display: flex; justify-content: space-between; align-items: center; padding-top: 7px; border-top: 1px solid rgba(255, 255, 255, 0.14); }
+.w-hourly-row { display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.14); }
 .w-hour-col { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-.w-h-time { font-size: 11px; font-weight: 600; opacity: 0.78; }
+.w-h-time { font-size: 11px; font-weight: 600; opacity: 0.78; font-variant-numeric: tabular-nums; }
 .w-h-icon { font-size: 15px; line-height: 1.1; }
-.w-h-temp { font-size: 13px; font-weight: 600; }
+.w-h-temp { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.w-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding-top: 7px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.w-status {
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+.w-refresh-btn {
+  font-size: 11px;
+  padding: 3px 9px;
+}
 
 /* 中央時鐘舞台 */
 .clock-stage {
@@ -144,38 +223,128 @@ html, body {
 
 .flip-unit {
   position: relative;
-  width: clamp(140px, 27vw, 360px);
-  height: clamp(180px, 42vh, 380px);
+  width: clamp(160px, 31vw, 420px);
+  height: clamp(200px, 50vh, 440px);
   border-radius: clamp(18px, 2.4vw, 28px);
   background: linear-gradient(180deg, #2b2d36 0%, #1d1e24 49.5%, #131418 50.5%, #1c1d23 100%);
   box-shadow: 0 24px 54px rgba(0, 0, 0, 0.85), 0 4px 12px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(110px, 20vw, 260px);
+  font-size: clamp(125px, 23vw, 295px);
   font-weight: 700;
+  line-height: 1;
   letter-spacing: -0.5vw;
   color: #f3f4f6;
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.55);
   font-variant-numeric: tabular-nums;
   overflow: hidden;
-  transition: all 0.35s ease;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+  transition: width 0.35s ease, height 0.35s ease, font-size 0.35s ease, background 0.35s ease, color 0.35s ease;
 }
 
-#app-container.mode-clock-only .flip-unit {
-  width: clamp(160px, 33vw, 440px);
-  height: clamp(210px, 54vh, 460px);
-  font-size: clamp(130px, 24.5vw, 310px);
+#app-container.mode-clean .flip-unit {
+  width: clamp(175px, 34vw, 460px);
+  height: clamp(220px, 56vh, 480px);
+  font-size: clamp(135px, 25.5vw, 325px);
 }
 
-.flip-unit .hinge-line { position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; background: linear-gradient(180deg, #09090b 0%, #27272a 100%); z-index: 5; }
-.flip-unit .hinge-left, .flip-unit .hinge-right { position: absolute; top: 50%; width: 10px; height: 22px; margin-top: -11px; background: linear-gradient(180deg, #52525b 0%, #27272a 100%); z-index: 6; }
+/* 機械翻頁 3D 葉片動畫（僅在機械翻頁主題觸發） */
+.flip-old-bottom,
+.flip-leaf {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.flip-leaf-num {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 200%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flip-old-bottom {
+  bottom: 0;
+  background: linear-gradient(180deg, #131418 0%, #1c1d23 100%);
+  z-index: 2;
+}
+.flip-old-bottom .flip-leaf-num { bottom: 0; }
+
+.flip-leaf-top {
+  top: 0;
+  background: linear-gradient(180deg, #2b2d36 0%, #1d1e24 100%);
+  transform-origin: center bottom;
+  -webkit-transform-origin: center bottom;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  z-index: 4;
+}
+.flip-leaf-top .flip-leaf-num { top: 0; }
+
+.flip-leaf-bottom {
+  bottom: 0;
+  background: linear-gradient(180deg, #131418 0%, #1c1d23 100%);
+  transform-origin: center top;
+  -webkit-transform-origin: center top;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: rotateX(90deg);
+  -webkit-transform: rotateX(90deg);
+  z-index: 4;
+}
+.flip-leaf-bottom .flip-leaf-num { bottom: 0; }
+
+body.theme-flip .flip-unit.flipping .flip-old-bottom {
+  display: block;
+}
+
+body.theme-flip .flip-unit.flipping .flip-leaf-top {
+  display: block;
+  animation: flipTopDown 0.2s ease-in forwards;
+  -webkit-animation: flipTopDown 0.2s ease-in forwards;
+}
+
+body.theme-flip .flip-unit.flipping .flip-leaf-bottom {
+  display: block;
+  animation: flipBottomDown 0.22s ease-out 0.19s forwards;
+  -webkit-animation: flipBottomDown 0.22s ease-out 0.19s forwards;
+}
+
+@keyframes flipTopDown {
+  0% { transform: rotateX(0deg); filter: brightness(1); }
+  100% { transform: rotateX(-90deg); filter: brightness(0.55); }
+}
+@-webkit-keyframes flipTopDown {
+  0% { -webkit-transform: rotateX(0deg); }
+  100% { -webkit-transform: rotateX(-90deg); }
+}
+
+@keyframes flipBottomDown {
+  0% { transform: rotateX(90deg); filter: brightness(0.6); }
+  100% { transform: rotateX(0deg); filter: brightness(1); }
+}
+@-webkit-keyframes flipBottomDown {
+  0% { -webkit-transform: rotateX(90deg); }
+  100% { -webkit-transform: rotateX(0deg); }
+}
+
+.flip-unit .hinge-line { position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; background: linear-gradient(180deg, #09090b 0%, #27272a 100%); z-index: 6; }
+.flip-unit .hinge-left, .flip-unit .hinge-right { position: absolute; top: 50%; width: 10px; height: 22px; margin-top: -11px; background: linear-gradient(180deg, #52525b 0%, #27272a 100%); z-index: 7; }
 .flip-unit .hinge-left { left: 0; border-radius: 0 3px 3px 0; }
 .flip-unit .hinge-right { right: 0; border-radius: 3px 0 0 3px; }
-.flip-unit .top-gloss { position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 100%); pointer-events: none; }
+.flip-unit .top-gloss { position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 100%); pointer-events: none; z-index: 5; }
 
-.flip-unit .ampm-tag { position: absolute; left: 16px; bottom: 14px; font-size: clamp(14px, 1.6vw, 20px); font-weight: 700; color: #a1a1aa; }
-.flip-unit .sec-tag { position: absolute; right: 16px; bottom: 14px; font-size: clamp(16px, 1.9vw, 24px); font-weight: 600; color: #a1a1aa; }
+.flip-unit .ampm-tag { position: absolute; left: 16px; bottom: 14px; font-size: clamp(14px, 1.6vw, 20px); font-weight: 700; letter-spacing: 0.04em; color: #a1a1aa; z-index: 6; }
+.flip-unit .sec-tag { position: absolute; right: 16px; bottom: 14px; font-size: clamp(16px, 1.9vw, 24px); font-weight: 600; letter-spacing: 0.04em; color: #a1a1aa; z-index: 6; }
 
 .colon-sep { font-size: clamp(70px, 12vw, 160px); font-weight: 700; opacity: 0.65; padding-bottom: 1.5vh; animation: colonBlink 2s infinite; }
 @keyframes colonBlink { 0%, 49% { opacity: 0.85; } 50%, 100% { opacity: 0.2; } }
@@ -189,6 +358,7 @@ html, body {
   gap: 14px;
   flex-wrap: wrap;
   z-index: 10;
+  min-height: 40px;
 }
 
 .widget-box {
@@ -210,11 +380,11 @@ html, body {
 
 /* 直向螢幕（Portrait）自動重排適配 */
 @media (orientation: portrait) {
-  .top-header-row { flex-direction: column; align-items: center; }
-  .left-pills { flex-direction: row; justify-content: center; flex-wrap: wrap; }
-  .ios-weather-wide { width: 92vw; max-width: 420px; }
-  .flip-unit { width: 38vw; height: 26vh; font-size: 27vw; }
-  #app-container.mode-clock-only .flip-unit { width: 41vw; height: 32vh; font-size: 30vw; }
+  .top-header-row { flex-direction: column; align-items: center; gap: 8px; }
+  .left-pills { justify-content: center; }
+  .weather-popover { left: 50%; right: auto; transform: translateX(-50%); width: min(90vw, 360px); animation-name: popoverInPortrait; }
+  .flip-unit { width: 40vw; height: 29vh; font-size: 28.5vw; }
+  #app-container.mode-clean .flip-unit { width: 42vw; height: 33vh; font-size: 30vw; }
 }
 
 /* 底部控制面板 */

@@ -9,6 +9,16 @@ body.theme-lcd {
   background: radial-gradient(circle at 50% 50%, #1c2229 0%, #0a0d10 85%, #000000 100%);
   color: #d8e2dc;
 }
+body.theme-lcd .ios-pill {
+  background: rgba(143, 163, 153, 0.12);
+  border-color: rgba(143, 163, 153, 0.25);
+  color: #d8e2dc;
+}
+body.theme-lcd .weather-popover {
+  background: linear-gradient(155deg, rgba(44, 51, 61, 0.96) 0%, rgba(24, 28, 34, 0.98) 100%);
+  border-color: rgba(143, 163, 153, 0.3);
+  color: #d8e2dc;
+}
 body.theme-lcd .flip-clock-group {
   background: linear-gradient(145deg, #2c333d, #181c22);
   padding: 18px 26px;
@@ -26,12 +36,12 @@ body.theme-lcd .flip-unit {
   background: transparent;
   box-shadow: none;
   width: auto;
-  height: clamp(160px, 35vh, 320px);
+  height: clamp(160px, 38vh, 340px);
   color: #141c18;
   text-shadow: 3px 5px 0px rgba(20, 28, 24, 0.14);
   font-family: "Courier New", Courier, monospace;
   font-weight: 800;
-  font-size: clamp(100px, 18.5vw, 240px);
+  font-size: clamp(100px, 19vw, 250px);
 }
 body.theme-lcd .hinge-line,
 body.theme-lcd .hinge-left,
@@ -47,18 +57,18 @@ body.theme-night {
   color: #8a909c;
 }
 body.theme-night .ios-pill { background: rgba(255, 255, 255, 0.03); border-color: rgba(255, 255, 255, 0.07); color: #7c828e; }
-body.theme-night .ios-weather-wide { background: rgba(255, 255, 255, 0.035); border-color: rgba(255, 255, 255, 0.09); color: #a1a7b3; box-shadow: none; }
+body.theme-night .weather-popover { background: rgba(14, 15, 19, 0.96); border-color: rgba(255, 255, 255, 0.11); color: #a1a7b3; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85); }
 body.theme-night .flip-unit {
   background: transparent;
   box-shadow: none;
   width: auto;
   padding: 0 1vw;
-  height: clamp(180px, 40vh, 360px);
+  height: clamp(190px, 44vh, 390px);
   text-shadow: none;
   font-weight: 600;
-  font-size: clamp(115px, 21.5vw, 275px);
+  font-size: clamp(120px, 22.5vw, 290px);
 }
-body.theme-night #app-container.mode-clock-only .flip-unit { height: clamp(220px, 50vh, 440px); font-size: clamp(135px, 25.5vw, 320px); }
+body.theme-night #app-container.mode-clean .flip-unit { height: clamp(220px, 52vh, 450px); font-size: clamp(135px, 25.5vw, 325px); }
 body.theme-night .hinge-line,
 body.theme-night .hinge-left,
 body.theme-night .hinge-right,
@@ -71,7 +81,7 @@ body.theme-vfd {
 }
 body.theme-vfd .ios-pill { background: rgba(44, 230, 200, 0.06); border-color: rgba(44, 230, 200, 0.24); }
 body.theme-vfd .ios-chip { background: rgba(44, 230, 200, 0.15); color: #5efce2; }
-body.theme-vfd .ios-weather-wide { background: rgba(44, 230, 200, 0.04); border-color: rgba(44, 230, 200, 0.25); color: #34f5d6; box-shadow: none; }
+body.theme-vfd .weather-popover { background: rgba(4, 18, 17, 0.96); border-color: rgba(44, 230, 200, 0.3); color: #34f5d6; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85); }
 body.theme-vfd .widget-box { border-color: rgba(44, 230, 200, 0.22); color: #34f5d6; }
 body.theme-vfd .flip-unit {
   background: rgba(44, 230, 200, 0.03);
@@ -96,20 +106,20 @@ body.theme-red {
 body.theme-red .ios-pill { background: rgba(239, 68, 68, 0.06); border-color: rgba(239, 68, 68, 0.22); color: #dc2626; }
 body.theme-red .ios-chip { background: rgba(239, 68, 68, 0.14); color: #f87171; }
 body.theme-red .battery-charging { color: #ef4444 !important; }
-body.theme-red .ios-weather-wide { background: rgba(239, 68, 68, 0.04); border-color: rgba(239, 68, 68, 0.22); color: #ef4444; box-shadow: none; }
+body.theme-red .weather-popover { background: rgba(18, 4, 4, 0.96); border-color: rgba(239, 68, 68, 0.28); color: #ef4444; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9); }
 body.theme-red .widget-box { border-color: rgba(239, 68, 68, 0.2); color: #ef4444; }
 body.theme-red .flip-unit {
   background: transparent;
   box-shadow: none;
   width: auto;
   padding: 0 1vw;
-  height: clamp(180px, 40vh, 360px);
+  height: clamp(190px, 44vh, 390px);
   color: #dc2626;
   text-shadow: none;
   font-weight: 600;
-  font-size: clamp(115px, 21.5vw, 275px);
+  font-size: clamp(120px, 22.5vw, 290px);
 }
-body.theme-red #app-container.mode-clock-only .flip-unit { height: clamp(220px, 50vh, 440px); font-size: clamp(135px, 25.5vw, 320px); }
+body.theme-red #app-container.mode-clean .flip-unit { height: clamp(220px, 52vh, 450px); font-size: clamp(135px, 25.5vw, 325px); }
 body.theme-red .hinge-line,
 body.theme-red .hinge-left,
 body.theme-red .hinge-right,

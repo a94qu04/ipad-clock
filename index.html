@@ -31,27 +31,42 @@
         </div>
       </div>
 
-      <!-- 右上角 iOS 15 2x1 寬版天氣小工具 -->
-      <div class="ios-weather-wide" id="disp-weather">
-        <div class="w-top">
-          <div class="w-top-left">
-            <div class="w-city-row"><span id="w-city-name">汐止區</span> <span style="font-size:12px;">📍</span></div>
-            <div class="w-temp-huge" id="w-temp">--°</div>
-          </div>
-          <div class="w-top-right">
-            <div class="w-icon-sm" id="w-icon">⛅</div>
-            <div class="w-cond-text" id="w-desc">載入氣象中</div>
-            <div class="w-hl-text" id="w-hl">最高 --°  最低 --°</div>
-          </div>
-        </div>
+      <!-- 右上角精簡天氣膠囊 + 點擊展開預報浮層（不擠壓主版面） -->
+      <div class="weather-anchor" id="disp-weather">
+        <button type="button" class="ios-pill weather-pill" id="weather-pill-btn" aria-expanded="false" aria-controls="weather-popover">
+          <span class="wp-city" id="w-city-name">汐止區</span>
+          <span class="wp-icon" id="w-icon">⛅</span>
+          <span class="wp-temp" id="w-temp">--°</span>
+          <span class="ios-chip wp-hl" id="w-hl-short">--° / --°</span>
+          <span class="wp-caret" aria-hidden="true">▾</span>
+        </button>
 
-        <div class="w-hourly-row" id="w-hourly-list">
-          <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
-          <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
-          <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
-          <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
-          <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
-          <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
+        <div class="weather-popover hidden-item" id="weather-popover" role="region" aria-label="詳細氣象預報">
+          <div class="w-top">
+            <div class="w-top-left">
+              <div class="w-city-row"><span id="w-city-full">汐止區</span> <span class="w-pin">📍</span></div>
+              <div class="w-temp-huge" id="w-temp-full">--°</div>
+            </div>
+            <div class="w-top-right">
+              <div class="w-icon-sm" id="w-icon-full">⛅</div>
+              <div class="w-cond-text" id="w-desc">載入氣象中</div>
+              <div class="w-hl-text" id="w-hl">最高 --°  最低 --°</div>
+            </div>
+          </div>
+
+          <div class="w-hourly-row" id="w-hourly-list">
+            <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
+            <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
+            <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
+            <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
+            <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
+            <div class="w-hour-col"><span class="w-h-time">--時</span><span class="w-h-icon">⛅</span><span class="w-h-temp">--°</span></div>
+          </div>
+
+          <div class="w-footer">
+            <span class="w-status" id="w-status">更新氣象中...</span>
+            <button type="button" class="mini-btn w-refresh-btn" id="w-refresh-btn">重新整理</button>
+          </div>
         </div>
       </div>
     </div>
@@ -66,6 +81,9 @@
             <div class="hinge-left"></div>
             <div class="hinge-right"></div>
             <span id="hours">00</span>
+            <div class="flip-old-bottom" aria-hidden="true"><span class="flip-leaf-num">00</span></div>
+            <div class="flip-leaf flip-leaf-top" aria-hidden="true"><span class="flip-leaf-num">00</span></div>
+            <div class="flip-leaf flip-leaf-bottom" aria-hidden="true"><span class="flip-leaf-num">00</span></div>
             <span class="ampm-tag" id="ampm">AM</span>
           </div>
 
@@ -77,6 +95,9 @@
             <div class="hinge-left"></div>
             <div class="hinge-right"></div>
             <span id="minutes">00</span>
+            <div class="flip-old-bottom" aria-hidden="true"><span class="flip-leaf-num">00</span></div>
+            <div class="flip-leaf flip-leaf-top" aria-hidden="true"><span class="flip-leaf-num">00</span></div>
+            <div class="flip-leaf flip-leaf-bottom" aria-hidden="true"><span class="flip-leaf-num">00</span></div>
             <span class="sec-tag" id="seconds">00</span>
           </div>
         </div>
@@ -118,7 +139,7 @@
       <button class="btn active" data-toggle="week">星期</button>
       <button class="btn active" data-toggle="lunar">農曆</button>
       <button class="btn active" data-toggle="battery">充電狀態</button>
-      <button class="btn active" data-toggle="weather">天氣卡片</button>
+      <button class="btn active" data-toggle="weather">天氣膠囊</button>
       <button class="btn active" data-toggle="pomodoro">番茄鐘</button>
       <button class="btn active" data-toggle="memo">桌面便籤</button>
     </div>
@@ -134,6 +155,7 @@
         <option value="22.999,120.227,台南市">📍 台南市</option>
         <option value="22.627,120.301,高雄市">📍 高雄市</option>
       </select>
+      <button class="btn" id="btn-hour12">🕒 24 小時制</button>
       <button class="btn" id="btn-noise">🌧️ 助眠雨聲：關</button>
       <button class="btn" id="btn-chime">🔔 整點報時：關</button>
       <button class="btn" id="btn-wakelock">⚡ 螢幕恆亮</button>
