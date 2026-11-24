@@ -193,6 +193,35 @@
     window.StandByServices.fetchWeather(state.city);
   });
 
+  var dimOverlay = document.getElementById("dim-overlay");
+  var dimSlider = document.getElementById("dim-slider");
+  var dimVal = document.getElementById("dim-val");
+  var brightnessHud = document.getElementById("brightness-hud");
+  var bhVal = document.getElementById("bh-val");
+  var bhFill = document.getElementById("bh-fill");
+  var bhIcon = document.getElementById("bh-icon");
+  var hudTimer = null;
+  var suppressClickUntil = 0;
+
+  function updateDimUI() {
+    dimOverlay.style.opacity = state.dim / 100;
+    dimSlider.value = state.dim;
+    dimVal.textContent = state.dim + "%";
+  }
+
+  function showBrightnessHud() {
+    if (!brightnessHud) return;
+    var brightness = 100 - state.dim;
+    bhVal.textContent = brightness + "%";
+    bhFill.style.height = brightness + "%";
+    bhIcon.textContent = brightness <= 45 ? "🌙" : "☀️";
+    brightnessHud.classList.add("visible");
+    clearTimeout(hudTimer);
+    hudTimer = setTimeout(function () {
+      brightnessHud.classList.remove("visible");
+    }, 1100);
+  }
+
   function applyState() {
     document.body.className = state.theme;
     var themeBtns = document.querySelectorAll("[data-theme]");
@@ -222,9 +251,7 @@
     document.getElementById("scale-slider").value = state.scale;
     document.getElementById("scale-val").textContent = state.scale + "%";
 
-    document.getElementById("dim-overlay").style.opacity = state.dim / 100;
-    document.getElementById("dim-slider").value = state.dim;
-    document.getElementById("dim-val").textContent = state.dim + "%";
+    updateDimUI();
 
     var toggleBtns = document.querySelectorAll("[data-toggle]");
     var anyDateOn = false;
@@ -259,6 +286,9 @@
   }
 
   document.body.addEventListener("click", function (e) {
+    if (Date.now() < suppressClickUntil) {
+      return;
+    }
     if (weatherAnchor && !weatherAnchor.contains(e.target)) {
       setWeatherPopoverOpen(false);
     }
@@ -333,9 +363,145 @@
   document.getElementById("dim-slider").addEventListener("input", function () {
     state.dim = parseInt(this.value, 10);
     localStorage.setItem("ipad_clock_dim_v6", state.dim);
-    applyState();
+    updateDimUI();
     showPanel();
   });
+
+  // 上下滑動直接調整螢幕亮度（上滑變亮、下滑變暗）
+  (function initBrightnessSwipe() {
+    var swipeActive = false;
+    var swipeLocked = false;
+    var swipeRejected = false;
+    var swipeStartX = 0;
+    var swipeStartY = 0;
+    var swipeStartDim = 0;
+    var lastTouchTime = 0;
+    var MOVE_THRESHOLD = 12;
+
+    var supportsPassive = false;
+    try {
+      var opts = Object.defineProperty({}, "passive", {
+        get: function () { supportsPassive = true; return false; }
+      });
+      window.addEventListener("test-passive", null, opts);
+      window.removeEventListener("test-passive", null, opts);
+    } catch (e) {}
+
+    function isIgnoredTarget(el) {
+      if (!el) return true;
+      if (panel && panel.contains(el)) return true;
+      if (weatherPopover && weatherPopover.contains(el)) return true;
+      var cur = el;
+      while (cur && cur !== document.body && cur !== document.documentElement) {
+        var tag = cur.tagName;
+        if (tag === "INPUT" || tag === "BUTTON" || tag === "SELECT" || tag === "TEXTAREA" || tag === "A" || tag === "LABEL") {
+          return true;
+        }
+        cur = cur.parentNode;
+      }
+      return false;
+    }
+
+    function beginSwipe(x, y, target) {
+      if (isIgnoredTarget(target)) return;
+      swipeActive = true;
+      swipeLocked = false;
+      swipeRejected = false;
+      swipeStartX = x;
+      swipeStartY = y;
+      swipeStartDim = state.dim;
+    }
+
+    function moveSwipe(x, y, e) {
+      if (!swipeActive || swipeRejected) return;
+      var dx = x - swipeStartX;
+      var dy = y - swipeStartY;
+
+      if (!swipeLocked) {
+        if (Math.abs(dx) < MOVE_THRESHOLD && Math.abs(dy) < MOVE_THRESHOLD) return;
+        if (Math.abs(dy) >= Math.abs(dx)) {
+          swipeLocked = true;
+          dimOverlay.classList.add("dragging");
+          setWeatherPopoverOpen(false);
+        } else {
+          swipeRejected = true;
+          return;
+        }
+      }
+
+      if (e && e.cancelable !== false && e.preventDefault) {
+        e.preventDefault();
+      }
+
+      var rangePx = Math.max(240, window.innerHeight * 0.55);
+      var nextDim = Math.round(swipeStartDim + (dy / rangePx) * 80);
+      if (nextDim < 0) nextDim = 0;
+      if (nextDim > 80) nextDim = 80;
+
+      if (nextDim !== state.dim) {
+        state.dim = nextDim;
+        updateDimUI();
+      }
+      showBrightnessHud();
+    }
+
+    function endSwipe() {
+      if (!swipeActive) return;
+      if (swipeLocked) {
+        dimOverlay.classList.remove("dragging");
+        localStorage.setItem("ipad_clock_dim_v6", state.dim);
+        suppressClickUntil = Date.now() + 350;
+      }
+      swipeActive = false;
+      swipeLocked = false;
+      swipeRejected = false;
+    }
+
+    var touchMoveOpt = supportsPassive ? { passive: false } : false;
+
+    document.addEventListener("touchstart", function (e) {
+      lastTouchTime = Date.now();
+      if (!e.touches || e.touches.length !== 1) {
+        endSwipe();
+        return;
+      }
+      beginSwipe(e.touches[0].clientX, e.touches[0].clientY, e.target);
+    }, false);
+
+    document.addEventListener("touchmove", function (e) {
+      if (!swipeActive || !e.touches || e.touches.length !== 1) return;
+      moveSwipe(e.touches[0].clientX, e.touches[0].clientY, e);
+    }, touchMoveOpt);
+
+    document.addEventListener("touchend", function () {
+      lastTouchTime = Date.now();
+      endSwipe();
+    }, false);
+
+    document.addEventListener("touchcancel", function () {
+      endSwipe();
+    }, false);
+
+    // 桌面滑鼠上下拖曳支援（方便電腦預覽與操作）
+    document.addEventListener("mousedown", function (e) {
+      if (e.button !== 0 || Date.now() - lastTouchTime < 600) return;
+      beginSwipe(e.clientX, e.clientY, e.target);
+    }, false);
+
+    document.addEventListener("mousemove", function (e) {
+      if (!swipeActive || Date.now() - lastTouchTime < 600) return;
+      moveSwipe(e.clientX, e.clientY, e);
+    }, false);
+
+    document.addEventListener("mouseup", function () {
+      if (Date.now() - lastTouchTime < 600) return;
+      endSwipe();
+    }, false);
+
+    window.addEventListener("blur", function () {
+      endSwipe();
+    }, false);
+  })();
 
   // 螢幕恆亮（優先使用 Screen Wake Lock API，並保留舊版 iOS 影片防休眠備援）
   var wakeLockEnabled = false;

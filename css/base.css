@@ -26,6 +26,74 @@ html, body {
   transition: opacity 0.25s ease;
 }
 
+#dim-overlay.dragging {
+  transition: none;
+}
+
+/* 右側垂直亮度回饋指示條（置於調光遮罩之上） */
+#brightness-hud {
+  position: fixed;
+  right: clamp(16px, 3vw, 36px);
+  top: 50%;
+  transform: translateY(-50%) scale(0.94);
+  width: 46px;
+  height: clamp(170px, 36vh, 240px);
+  padding: 12px 8px;
+  border-radius: 23px;
+  background: rgba(24, 25, 30, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #f4f4f6;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 80;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+#brightness-hud.visible {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+.bh-val {
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  opacity: 0.92;
+}
+
+.bh-track {
+  position: relative;
+  width: 8px;
+  flex: 1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  overflow: hidden;
+}
+
+.bh-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffffff 0%, #d4d4d8 100%);
+}
+
+.bh-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
 #app-container {
   position: relative;
   width: 100%;
@@ -35,6 +103,7 @@ html, body {
   justify-content: space-between;
   padding: calc(env(safe-area-inset-top, 16px) + 12px) clamp(16px, 3vw, 40px) clamp(14px, 2.5vh, 28px) clamp(16px, 3vw, 40px);
   transition: transform 1.5s ease-in-out;
+  touch-action: none;
 }
 
 /* 頂部列（統一單列高度，確保中央時鐘視覺置中） */

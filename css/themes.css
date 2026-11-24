@@ -97,6 +97,9 @@ body.theme-vfd .hinge-right { display: none; }
 body.theme-vfd .ampm-tag,
 body.theme-vfd .sec-tag { color: #2ce6c8; }
 body.theme-vfd .colon-sep { color: #34f5d6; text-shadow: 0 0 18px rgba(52, 245, 214, 0.75); }
+body.theme-vfd #brightness-hud { background: rgba(4, 18, 17, 0.92); border-color: rgba(44, 230, 200, 0.32); color: #34f5d6; }
+body.theme-vfd .bh-track { background: rgba(44, 230, 200, 0.16); }
+body.theme-vfd .bh-fill { background: linear-gradient(180deg, #5efce2 0%, #2ce6c8 100%); }
 
 /* 5. 護眼紅光夜視模式 */
 body.theme-red {
@@ -127,3 +130,6 @@ body.theme-red .top-gloss { display: none; }
 body.theme-red .ampm-tag,
 body.theme-red .sec-tag { color: #991b1b; }
 body.theme-red .colon-sep { color: #dc2626; }
+body.theme-red #brightness-hud { background: rgba(18, 4, 4, 0.92); border-color: rgba(239, 68, 68, 0.32); color: #ef4444; }
+body.theme-red .bh-track { background: rgba(239, 68, 68, 0.18); }
+body.theme-red .bh-fill { background: linear-gradient(180deg, #ef4444 0%, #991b1b 100%); }
